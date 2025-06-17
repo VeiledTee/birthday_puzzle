@@ -1,4 +1,3 @@
-
 body {
   font-family: sans-serif;
   padding: 20px;
@@ -23,6 +22,10 @@ ol {
   padding-left: 20px;
 }
 
+.clue-number {
+  font-weight: bold;
+  margin-right: 8px;
+}
 
 #crossword-grid {
   border-collapse: collapse;
@@ -35,6 +38,7 @@ ol {
   text-align: center;
   border: 1px solid #999;
   padding: 0;
+  position: relative;
 }
 
 #crossword-grid input {
@@ -43,9 +47,57 @@ ol {
   text-align: center;
   font-size: 16px;
   border: none;
+  background: transparent;
 }
 
 #crossword-grid .blank {
   background-color: #eee;
   border: none;
+}
+
+#crossword-grid input:focus {
+  outline: 2px solid #cc3366;
+  background-color: #fff;
+  z-index: 10;
+}
+
+.clue-number {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 8px;
+  font-weight: bold;
+}
+
+.controls {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#check-btn {
+  background-color: #cc3366;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#check-btn:hover {
+  background-color: #b02a57;
+}
+
+#message {
+  margin-top: 15px;
+  min-height: 25px;
+  font-weight: bold;
+}
+
+.correct {
+  color: #2e8b57;
+}
+
+.incorrect {
+  color: #dc143c;
 }
