@@ -22,3 +22,30 @@ h1 {
 ol {
   padding-left: 20px;
 }
+
+
+#crossword-grid {
+  border-collapse: collapse;
+  margin: 20px auto;
+}
+
+#crossword-grid td {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border: 1px solid #999;
+  padding: 0;
+}
+
+#crossword-grid input {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 16px;
+  border: none;
+}
+
+#crossword-grid .blank {
+  background-color: #eee;
+  border: none;
+}
