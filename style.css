@@ -46,9 +46,12 @@ ol {
   height: 100%;
   text-align: center;
   font-size: 16px;
-  border: none;
   background: transparent;
+  outline: none; /* default state, no outline */
+  border: 2px solid transparent; /* enables border space to be styled later */
+  box-sizing: border-box; /* ensures borders don't overflow */
 }
+
 
 #crossword-grid .blank {
   background-color: #eee;
@@ -100,4 +103,14 @@ ol {
 
 .incorrect {
   color: #dc143c;
+}
+
+.cell-number {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #333;
+  pointer-events: none;
 }
