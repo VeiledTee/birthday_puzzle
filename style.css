@@ -47,9 +47,9 @@ ol {
   text-align: center;
   font-size: 16px;
   background: transparent;
-  outline: none; /* default state, no outline */
-  border: 2px solid transparent; /* enables border space to be styled later */
-  box-sizing: border-box; /* ensures borders don't overflow */
+  outline: none;
+  border: 2px solid transparent;
+  box-sizing: border-box;
 }
 
 
@@ -113,4 +113,107 @@ ol {
   font-weight: bold;
   color: #333;
   pointer-events: none;
+}
+
+/* Add to existing CSS */
+#connections-section {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px dashed #cc3366;
+}
+
+.connections-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.connection-word {
+  padding: 12px 8px;
+  background-color: #f5f5f5;
+  text-align: center;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.connection-word.selected {
+  background-color: #a0d8ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.connection-word.correct {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.connection-word.incorrect {
+  animation: shake 0.5s;
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+@keyframes shake {
+  0%, 100% {transform: translateX(0);}
+  25% {transform: translateX(-5px);}
+  75% {transform: translateX(5px);}
+}
+
+.connections-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+
+#submit-group, #shuffle-words {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+#submit-group {
+  background-color: #4CAF50;
+  color: white;
+}
+
+#submit-group:hover {
+  background-color: #3e8e41;
+}
+
+#shuffle-words {
+  background-color: #2196F3;
+  color: white;
+}
+
+#shuffle-words:hover {
+  background-color: #0b7dda;
+}
+
+#strikes {
+  font-weight: bold;
+  color: #dc143c;
+}
+
+.solved-group {
+  background-color: #e6f7ff;
+  border-left: 4px solid #1890ff;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+#solved-groups h3 {
+  color: #cc3366;
+  margin-bottom: 15px;
 }

@@ -156,10 +156,214 @@ checkBtn.addEventListener('click', () => {
     }
   });
 
+  const connectionsSection = document.getElementById('connections-section');
+const connectionsGrid = document.getElementById('connections-grid');
+const submitGroupBtn = document.getElementById('submit-group');
+const shuffleBtn = document.getElementById('shuffle-words');
+const strikeCount = document.getElementById('strike-count');
+const solvedGroupsDiv = document.getElementById('solved-groups');
+
+// Game categories and words
+const categories = {
+  doubleLetters: {
+    name: "Double Letters",
+    words: ["HAPPY", "SLEEP", "TEETH", "CLASS"],
+    solved: false
+  },
+  brands: {
+    name: "Brands",
+    words: ["LOVEISLAND", "YETI", "PINK", "LEGOLAND"],
+    solved: false
+  },
+  birthday: {
+    name: "Birthday Related",
+    words: ["SONG", "CAKE", "EVENT", "CANDLE"],
+    solved: false
+  },
+  slang: {
+    name: "Slang",
+    words: ["SLAY", "EAT", "ADORE", "LOVE"],
+    solved: false
+  }
+};
+
+let selectedWords = [];
+let strikes = 0;
+const MAX_STRIKES = 4;
+let connectionsInitialized = false;
+
+// Initialize Connections game
+function initConnectionsGame() {
+  if (connectionsInitialized) return;
+  
+  // Get all words from categories
+  const allWords = [
+    ...categories.doubleLetters.words,
+    ...categories.brands.words,
+    ...categories.birthday.words,
+    ...categories.slang.words
+  ];
+  
+  // Shuffle and display words
+  shuffleWords(allWords);
+  
+  // Set up event listeners
+  submitGroupBtn.addEventListener('click', submitGroup);
+  shuffleBtn.addEventListener('click', () => shuffleWords(allWords));
+  
+  connectionsInitialized = true;
+}
+
+// Shuffle and display words
+function shuffleWords(words) {
+  connectionsGrid.innerHTML = '';
+  selectedWords = [];
+  
+  // Fisher-Yates shuffle algorithm
+  for (let i = words.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [words[i], words[j]] = [words[j], words[i]];
+  }
+  
+  // Create word elements
+  words.forEach(word => {
+    const wordEl = document.createElement('div');
+    wordEl.className = 'connection-word';
+    wordEl.textContent = word;
+    wordEl.dataset.word = word;
+    wordEl.addEventListener('click', () => toggleSelectWord(wordEl));
+    connectionsGrid.appendChild(wordEl);
+  });
+}
+
+// Toggle word selection
+function toggleSelectWord(element) {
+  const word = element.dataset.word;
+  
+  if (element.classList.contains('selected')) {
+    element.classList.remove('selected');
+    selectedWords = selectedWords.filter(w => w !== word);
+  } else {
+    if (selectedWords.length < 4) {
+      element.classList.add('selected');
+      selectedWords.push(word);
+    }
+  }
+}
+
+// Submit a group for validation
+function submitGroup() {
+  if (selectedWords.length !== 4) {
+    alert('Please select exactly 4 words!');
+    return;
+  }
+  
+  // Check if the selection matches any category
+  let matchedCategory = null;
+  
+  for (const [key, category] of Object.entries(categories)) {
+    if (category.solved) continue;
+    
+    const isMatch = selectedWords.every(word => 
+      category.words.includes(word)
+    );
+    
+    if (isMatch) {
+      matchedCategory = category;
+      category.solved = true;
+      break;
+    }
+  }
+  
+  if (matchedCategory) {
+    // Correct group - mark as solved
+    selectedWords.forEach(word => {
+      const element = document.querySelector(`.connection-word[data-word="${word}"]`);
+      if (element) {
+        element.classList.remove('selected');
+        element.classList.add('correct');
+        element.style.pointerEvents = 'none';
+      }
+    });
+    
+    // Display solved group
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'solved-group';
+    groupDiv.innerHTML = `<strong>${matchedCategory.name}:</strong> ${matchedCategory.words.join(', ')}`;
+    solvedGroupsDiv.appendChild(groupDiv);
+    
+    // Clear selection
+    selectedWords = [];
+    
+    // Check if all groups are solved
+    const allSolved = Object.values(categories).every(cat => cat.solved);
+    if (allSolved) {
+      setTimeout(() => {
+        alert('🎉 Congratulations! You solved all groups! 🎂');
+      }, 500);
+    }
+  } else {
+    // Incorrect group - strike
+    strikes++;
+    strikeCount.textContent = strikes;
+    
+    // Visual feedback for incorrect selection
+    selectedWords.forEach(word => {
+      const element = document.querySelector(`.connection-word[data-word="${word}"]`);
+      if (element) {
+        element.classList.add('incorrect');
+        setTimeout(() => {
+          element.classList.remove('incorrect', 'selected');
+        }, 1000);
+      }
+    });
+    
+    // Clear selection
+    selectedWords = [];
+    
+    // Check if game over
+    if (strikes >= MAX_STRIKES) {
+      setTimeout(() => {
+        alert('Game over! You reached the maximum strikes.');
+        revealAllGroups();
+      }, 500);
+    }
+  }
+}
+
+// Reveal all unsolved groups
+function revealAllGroups() {
+  for (const [key, category] of Object.entries(categories)) {
+    if (!category.solved) {
+      category.solved = true;
+      
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'solved-group';
+      groupDiv.innerHTML = `<strong>${category.name}:</strong> ${category.words.join(', ')}`;
+      solvedGroupsDiv.appendChild(groupDiv);
+      
+      // Mark words as solved in grid
+      category.words.forEach(word => {
+        const element = document.querySelector(`.connection-word[data-word="${word}"]`);
+        if (element) {
+          element.classList.add('correct');
+          element.style.pointerEvents = 'none';
+        }
+      });
+    }
+  }
+}
+
   messageDiv.textContent = allCorrect
     ? '🎉 All answers are correct! Happy Birthday! 🎂'
     : 'Some answers are incorrect. Keep trying!';
   messageDiv.className = allCorrect ? 'correct' : 'incorrect';
+
+  // Show Connections game when crossword is solved
+  if (allCorrect) {
+    connectionsSection.style.display = 'block';
+    initConnectionsGame();
+  }
 });
 
 

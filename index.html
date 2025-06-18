@@ -46,8 +46,26 @@
     </div>
   </div>
 
-  <h2>Connections</h2>
-  <p>Once solved, group the 18 non-HAPPYBIRTHDAY answers into 4 logical categories. Good luck!</p>
+<!-- Connections Game Section (initially hidden) -->
+  <div id="connections-section" style="display: none;">
+    <h2>Connections Puzzle</h2>
+    <p>Now, group these words into four categories of four!</p>
+    
+    <div id="connections-grid" class="connections-grid">
+      <!-- Words will be populated dynamically -->
+    </div>
+    
+    <div class="connections-controls">
+      <button id="submit-group">Submit Group</button>
+      <button id="shuffle-words">Shuffle Words</button>
+      <div id="strikes">Strikes: <span id="strike-count">0</span>/4</div>
+    </div>
+    
+    <div id="solved-groups">
+      <h3>Solved Groups:</h3>
+      <!-- Solved groups will appear here -->
+    </div>
+  </div>
 
   <div class="controls">
     <button id="check-btn">Check Answers</button>
